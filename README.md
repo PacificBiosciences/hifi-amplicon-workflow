@@ -13,8 +13,8 @@ conda create \
 # activate the base conda environment
 conda activate ./conda_env
 
-# clone the github repo
-git clone http://bitbucket.pacificbiosciences.com:7990/scm/~jharting/single_gene_amplicon.git
+# clone the github repo into 'workflow' subdirectory
+git clone http://bitbucket.pacificbiosciences.com:7990/scm/~jharting/single_gene_amplicon.git workflow
 
 # create a couple directories for reference sequence and analysis logs
 $ mkdir reference cluster_logs
