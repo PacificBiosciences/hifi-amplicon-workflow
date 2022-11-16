@@ -1,0 +1,19 @@
+__default__:
+  partition: compute
+  cpus: 2
+  extra: ''
+  out: cluster_logs/slurm-%x-%j-%N.out
+demux_ubam:
+  cpus: 16
+primer_trim:
+  cpus: 4
+align_hifi:
+  cpus: 8
+align_consensus:
+  cpus: 2
+pbaa_cluster:
+  cpus: 16
+bam_to_fastq:
+  cpus: 2
+fqidx:
+  cpus: 1
