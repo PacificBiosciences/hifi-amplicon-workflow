@@ -28,7 +28,7 @@ $ mkdir reference cluster_logs
 # run the workflow for batch <batch_id>
 $ sbatch workflow/run_snakemake.sh <batch_name> <biosample_csv> <hifi_reads>
  
-Results will be generated in a new directory named <batch_id>
+Results will be generated in a new directory named batches/<batch_id>
 ```
 
 # Release History
