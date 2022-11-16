@@ -25,7 +25,7 @@ $ mkdir reference cluster_logs
 # GBA/GBAP1 are included as an example.  Remove these if they are not your targets!
 # (NOTE -- for very highly homologous [>99%] loci like SMN1 & SMN2 it may be desirable to define only one region)
 
-# run the workflow for batch <batch_id>
+# run the workflow for batch <batch_name>
 $ sbatch workflow/run_snakemake.sh <batch_name> <biosample_csv> <hifi_reads>
  
 Results will be generated in a new directory named batches/<batch_id>
