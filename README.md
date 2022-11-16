@@ -1,5 +1,5 @@
 # HiFi Amplicon Workflow
-Generalized amplicon workflow for songle-gene HiFi amplicon targets
+Generalized amplicon workflow for single-gene HiFi amplicon targets
 
 # To set up and run pipeline
 ```
@@ -22,6 +22,7 @@ $ mkdir reference cluster_logs
 # drop your reference.fasta, reference.fasta.fai, barcode.fasta and primer.fasta into the reference directory
 # adjust the paths to those files in workflow/config.yaml
 # Define the amplified regions in workflow/config.yaml relative to the reference -- this region will be used for the cluster guide
+# GBA/GBAP1 are included as an example.  Remove these if they are not your targets!
 # (NOTE -- for very highly homologous [>99%] loci like SMN1 & SMN2 it may be desirable to define only one region)
 
 # run the workflow for batch <batch_id>
