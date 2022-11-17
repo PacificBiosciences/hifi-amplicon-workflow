@@ -33,3 +33,4 @@ Results will be generated in a new directory named batches/<batch_id>
 
 # Release History
 * 0.1.0 - Initial Release (11/16/2022)
+* 0.1.1 - Add alignment & color by cluster of HiFi reads
