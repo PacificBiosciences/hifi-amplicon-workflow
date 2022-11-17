@@ -25,4 +25,7 @@ minClusterReads: 10
 maxAmpliconSize: 20000
 maxUchime: 1
 
+#alignment
+alignHiFi: False
+
 # variant calling

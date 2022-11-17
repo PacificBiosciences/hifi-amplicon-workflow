@@ -8,7 +8,7 @@ conda create \
   --channel bioconda \
   --channel conda-forge \
   --prefix ./conda_env \
-  python=3 snakemake=6.15.5 pysam mamba lockfile
+  python=3 snakemake pysam mamba lockfile
 
 # activate the base conda environment
 conda activate ./conda_env
@@ -17,7 +17,7 @@ conda activate ./conda_env
 git clone http://bitbucket.pacificbiosciences.com:7990/scm/~jharting/single_gene_amplicon.git workflow
 
 # create a couple directories for reference sequence and analysis logs
-$ mkdir reference cluster_logs
+mkdir reference cluster_logs
 
 # drop your reference.fasta, reference.fasta.fai, barcode.fasta and primer.fasta into the reference directory
 # adjust the paths to those files in workflow/config.yaml
@@ -26,7 +26,7 @@ $ mkdir reference cluster_logs
 # (NOTE -- for very highly homologous [>99%] loci like SMN1 & SMN2 it may be desirable to define only one region)
 
 # run the workflow for batch <batch_name>
-$ sbatch workflow/run_snakemake.sh <batch_name> <biosample_csv> <hifi_reads>
+sbatch workflow/run_snakemake.sh <batch_name> <biosample_csv> <hifi_reads>
  
 Results will be generated in a new directory named batches/<batch_id>
 ```

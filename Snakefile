@@ -74,18 +74,21 @@ def _agg_consensus_vcf( wildcards ):
 #    samples = _get_demuxed_samples( wildcards )
 #    return expand( f'batches/{batch}/{{sample}}/hifi.painted.bam', sample=samples )
 
-targets = []
+extra_targets = []
 
 include: "rules/demux.smk"
 include: "rules/primertrim.smk"
 include: "rules/bam2fastq.smk"
 include: "rules/pbaa.smk"
-include: "rules/align.smk"
+include: "rules/alignConsensus.smk"
 include: "rules/htsbox.smk"
-#include: "rules/report.smk"
+
+if config['alignHiFi']:
+    include: "rules/alignHiFi.smk"
 
 rule all:
     input:
         _agg_consensus,
         _agg_mapped_consensus,
         _agg_consensus_vcf,
+        extra_targets,
