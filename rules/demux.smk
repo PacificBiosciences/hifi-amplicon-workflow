@@ -38,4 +38,4 @@ rule check_demux_fail:
                 for sample in missing:
                     ofile.write( f'{sample2barcode[sample]},{sample}\n' ) 
 
-extra_targets.append( f'batches/{batch}/logs/lima/demux_no_yield.log' )
+extra_targets.append( f'batches/{batch}/logs/demux/demux_no_yield.log' )
