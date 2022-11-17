@@ -1,3 +1,6 @@
+localrules:
+    extract_alignments
+
 checkpoint extract_alignments:
     input:
         bam=f'batches/{batch}/{{sample}}/pbaa_passed_cluster_sequences.{ref}.bam',
