@@ -4,6 +4,7 @@ tmpdir: '/scratch'
 # Demux
 barcodes: 'reference/Sequel_96_barcodes_v1.fasta'
 primers: 'reference/primers_gba_gbap1.fasta'
+barcodePreset: 'ASYMMETRIC'
 demuxCross: True
 minPrimerMatch: 95
 

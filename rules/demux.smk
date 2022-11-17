@@ -6,7 +6,7 @@ checkpoint demux_ubam:
     output:
         directory(f'batches/{batch}/demux')
     params:
-        preset='--hifi-preset ASYMMETRIC --split-named',
+        preset=f'--hifi-preset {config["barcodePreset"]} --split-named',
         loglevel='INFO',
     threads:
         16
