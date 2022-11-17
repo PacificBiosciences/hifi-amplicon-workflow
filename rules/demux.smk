@@ -35,7 +35,8 @@ rule check_demux_fail:
         missing = sample2bc.keys() - { bc2sample[bc] for bc in params.barcodes }
         if len( missing ):
             with open( f"batches/{batch}/demux_no_yield.txt", 'w' ) as ofile:
+                ofile.write( 'Sample,Potential_Barcodes\n' )
                 for sample in missing:
-                    ofile.write( f'{sample2barcode[sample]},{sample}\n' ) 
+                    ofile.write( f'{sample},{sample2bc[sample]}\n' )
 
 extra_targets.append( f'batches/{batch}/logs/demux/demux_no_yield.log' )
