@@ -45,7 +45,7 @@ rule paint_bam:
         bam=f'batches/{batch}/{{sample}}/aligned/{{sample}}.{ref}.aligned.bam',
         idx=f'batches/{batch}/{{sample}}/aligned/{{sample}}.{ref}.aligned.bam.bai',
     output:
-        f'batches/{batch}/{{sample}}/hifi.painted.bam'
+        f'batches/{batch}/{{sample}}/hifi.{ref}.painted.bam'
     threads: 
         1
     conda:
@@ -60,7 +60,7 @@ rule paint_bam:
 extra_targets.append( 
     lambda wildcards:
         [
-         f'batches/{batch}/{sample}/hifi.painted.bam'
+         f'batches/{batch}/{sample}/hifi.{ref}.painted.bam'
          for sample in { bc2sample[bc] for bc in _get_bam_demuxed( wildcards ) } 
         ]
  ) 
