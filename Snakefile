@@ -74,7 +74,7 @@ def _agg_consensus_vcf( wildcards ):
 #    samples = _get_demuxed_samples( wildcards )
 #    return expand( f'batches/{batch}/{{sample}}/hifi.painted.bam', sample=samples )
 
-extra_targets = []
+extra_targets = [ f"batches/{batch}/logs/lima/demux_no_yield.log" ]
 
 include: "rules/demux.smk"
 include: "rules/primertrim.smk"

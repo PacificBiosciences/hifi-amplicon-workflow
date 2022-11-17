@@ -34,7 +34,7 @@ snakemake --reason \
              hifiReads="${HIFI}" \
     --nolock \
     --local-cores 16 \
-    --jobs 100 \
+    --jobs 500 \
     --max-jobs-per-second 1 \
     --use-conda --conda-frontend mamba \
     --latency-wait 120 \

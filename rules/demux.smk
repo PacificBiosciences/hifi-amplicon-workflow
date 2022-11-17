@@ -30,12 +30,12 @@ rule check_demux_fail:
     params:
         barcodes=_get_bam_demuxed,
     log:
-        f"batches/{batch}/logs/lima/demux_no_yield.log",
+        f"batches/{batch}/logs/demux/demux_no_yield.log",
     run:
-        missing = bc2sample.keys() - params.barcodes
+        missing = sample2bc.keys() - { bc2sample[bc] for bc in params.barcodes }
         if len( missing ):
             with open( f"batches/{batch}/demux_no_yield.txt", 'w' ) as ofile:
                 for sample in missing:
                     ofile.write( f'{sample2barcode[sample]},{sample}\n' ) 
 
-targets.append( f'batches/{batch}/logs/lima/demux_no_yield.log' )
+extra_targets.append( f'batches/{batch}/logs/lima/demux_no_yield.log' )

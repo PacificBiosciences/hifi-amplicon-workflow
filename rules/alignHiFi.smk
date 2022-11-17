@@ -1,7 +1,7 @@
 rule extract_clustered_reads:
     input:
         info=f'batches/{batch}/{{sample}}/pbaa_read_info.txt',
-        fq=f'batches/{batch}/{{sample}}/primertrim_subsample/{{sample}}.fastq'
+        fq=f'batches/{batch}/{{sample}}/primertrim_subsample/{{sample}}.fastq',
         idx=f'batches/{batch}/{{sample}}/primertrim_subsample/{{sample}}.fastq.fai',
     output:
         incl=temp(f'batches/{batch}/{{sample}}/clustered_holes.txt'),
@@ -15,7 +15,7 @@ rule extract_clustered_reads:
     shell:
         '''
         (cut -d' ' -f1 {input.info} > {output.incl}
-         seqtk subsample {input.fq} {output.incl} > {output.fq}) > {log} 2>&1
+         seqtk subseq {input.fq} {output.incl} > {output.fq}) > {log} 2>&1
         '''
 
 rule align_hifi:

@@ -9,7 +9,7 @@ minPrimerMatch: 95
 
 # references
 reference: 
-    fasta: 'reference/human_GRCh38_no_alt_analysis_set.fasta'
+    fasta: 'reference/human_GRCh38_chr1_only.fasta'
     label: 'GRCh38' 
 regions:
     GBA: 'chr1:155234293-155244663'
