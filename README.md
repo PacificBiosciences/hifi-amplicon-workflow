@@ -8,7 +8,7 @@ conda create \
   --channel bioconda \
   --channel conda-forge \
   --prefix ./conda_env \
-  python=3 snakemake pysam mamba lockfile
+  python=3 snakemake pysam pandas mamba lockfile
 
 # activate the base conda environment
 conda activate ./conda_env
