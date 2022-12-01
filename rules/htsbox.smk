@@ -1,5 +1,4 @@
-localrules:
-    extract_alignments
+localrules: tabix_vcf, extract_alignments
 
 checkpoint extract_alignments:
     input:
@@ -59,15 +58,13 @@ rule bgzip_vcf:
 
 rule tabix_vcf:
     input:
-        f'batches/{batch}/{{sample}}/vcf/{{consensus}}.{ref}.htsbox.vcf.gz'
+        f'batches/{batch}/{{sample}}/{{prefix}}.vcf.gz'
     output:
-        f'batches/{batch}/{{sample}}/vcf/{{consensus}}.{ref}.htsbox.vcf.gz.tbi'
-    log:
-        f"batches/{batch}/logs/bgzip/{{sample}}.{{consensus}}.{ref}.tabix.log",
+        f'batches/{batch}/{{sample}}/{{prefix}}.vcf.gz.tbi'
     threads: 1
     conda:
         "envs/htslib.yaml"
     message:
         "Executing {rule}: Indexing {input}."
     shell:
-        "(tabix -p vcf {input}) > {log} 2>&1"
+        "tabix -p vcf {input}"

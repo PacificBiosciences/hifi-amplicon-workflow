@@ -58,21 +58,18 @@ def _agg_mapped_consensus( wildcards ):
     samples = { bc2sample[bc] for bc in _get_bam_demuxed( wildcards ) }
     return expand( f'batches/{batch}/{{sample}}/pbaa_passed_cluster_sequences.{ref}.bam', sample=samples )
 
-def _agg_consensus_vcf( wildcards ):
-    samples = { bc2sample[bc] for bc in _get_bam_demuxed( wildcards ) }
-    targets = []
-    for sample in samples:
-        extract_dir = checkpoints.extract_alignments.get( sample=sample ).output[0]
-        consensus   = glob_wildcards( f'{extract_dir}/{{consensus}}.{ref}.bam' ).consensus
-        targets.extend( expand( f'batches/{batch}/{sample}/vcf/{{consensus}}.{ref}.htsbox.vcf.gz.tbi', consensus=consensus ) )
-    return targets
+#def _agg_consensus_vcf( wildcards ):
+#    samples = { bc2sample[bc] for bc in _get_bam_demuxed( wildcards ) }
+#    targets = []
+#    for sample in samples:
+#        extract_dir = checkpoints.extract_alignments.get( sample=sample ).output[0]
+#        consensus   = glob_wildcards( f'{extract_dir}/{{consensus}}.{ref}.bam' ).consensus
+#        targets.extend( expand( f'batches/{batch}/{sample}/vcf/{{consensus}}.{ref}.htsbox.variants.tsv', consensus=consensus ) )
+#    return targets
 
-#def _agg_painted( wildcards ):
-#    '''
-#    Returns a list of expected cluster-tagged HiFi reads aligned to ref, given samples that produced demux output
-#    '''
-#    samples = _get_demuxed_samples( wildcards )
-#    return expand( f'batches/{batch}/{{sample}}/hifi.painted.bam', sample=samples )
+def _agg_variant_summary( wildcards ):
+    samples = { bc2sample[bc] for bc in _get_bam_demuxed( wildcards ) }
+    return expand( f'batches/{batch}/{{sample}}/{{sample}}.{ref}.clinvar_annotated.variant_summary.tsv', sample=samples )
 
 extra_targets = []
 
@@ -82,6 +79,8 @@ include: "rules/bam2fastq.smk"
 include: "rules/pbaa.smk"
 include: "rules/alignConsensus.smk"
 include: "rules/htsbox.smk"
+include: "rules/annotate.smk"
+include: "rules/report.smk"
 
 if config['alignHiFi']:
     include: "rules/alignHiFi.smk"
@@ -90,5 +89,5 @@ rule all:
     input:
         _agg_consensus,
         _agg_mapped_consensus,
-        _agg_consensus_vcf,
+        _agg_variant_summary,
         extra_targets,

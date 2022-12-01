@@ -37,7 +37,7 @@ rule pbaa_cluster:
         maxUchime=config[ 'maxUchime' ],
         maxLen=config[ 'maxAmpliconSize' ],
     threads:
-        8
+        16
     log:
         f'batches/{batch}/logs/pbaa/cluster.{{sample}}.log'
     conda:
@@ -54,58 +54,3 @@ rule pbaa_cluster:
                       --log-level {params.loglevel} \
                       {input.guide} {input.fq} {params.prefix}) > {log} 2>&1
         '''
-
-#rule extract_clustered_reads:
-#    input:
-#        info=f'batches/{batch}/{{sample}}/pbaa_read_info.txt',
-#        bam=f'batches/{batch}/{{sample}}/aligned/{{sample}}.{ref}.aligned.bam',
-#        idx=f'batches/{batch}/{{sample}}/aligned/{{sample}}.{ref}.aligned.bam.bai',
-#    output:
-#        incl=temp(f'batches/{batch}/{{sample}}/clustered_holes.txt'),
-#        tmp=temp(f'batches/{batch}/{{sample}}/hifi.bam'),
-#        idx=temp(f'batches/{batch}/{{sample}}/hifi.bam.bai'),
-#    threads:
-#        1
-#    conda:
-#        'envs/samtools.yaml'
-#    log:
-#        f'batches/{batch}/logs/samtoole/extract.{{sample}}.log'
-#    shell:
-#        '''
-#        (cut -d' ' -f1 {input.info} > {output.incl}
-#         samtools view -bhN {output.incl} {input.bam} --write-index -o {output.tmp}##idx##{output.idx}) > {log} 2>&1
-#        '''
-#        
-#rule paint_bam:
-#    input:
-#        info=f'batches/{batch}/{{sample}}/pbaa_read_info.txt',
-#        bam=f'batches/{batch}/{{sample}}/hifi.bam',
-#        idx=f'batches/{batch}/{{sample}}/hifi.bam.bai',
-#    output:
-#        f'batches/{batch}/{{sample}}/hifi.painted.bam'
-#    threads: 
-#        1
-#    conda:
-#        'envs/pbaa.yaml'
-#    log:
-#        f'batches/{batch}/logs/pbaa/bampaint.{{sample}}.log'
-#    shell:
-#        '''
-#        (pbaa bampaint {input.info} {input.bam} {output}) > {log} 2>&1
-#        '''
-
-#rule index_bam:
-#    input:
-#        f'batches/{batch}/{{sample}}/hifi.painted.bam'
-#    output:
-#        f'batches/{batch}/{{sample}}/hifi.painted.bam.bai'
-#    threads: 
-#        1
-#    log:
-#        f'batches/{batch}/logs/samtools/index_painted.{{sample}}.log'
-#    conda:
-#        'envs/samtools.yaml'
-#    shell: 
-#        '''
-#        (samtools index {input}) > {log} 2>&1
-#        '''

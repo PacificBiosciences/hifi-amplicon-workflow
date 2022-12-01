@@ -14,8 +14,8 @@ reference:
     label: 'GRCh38' 
 regions:
     GBA: 'chr1:155234293-155244663'
-    GPAP1: 'chr1:155211825-155229534'
-#annotation: 'reference/00-All.fixed_chr.vcf.gz'
+    GBAP1: 'chr1:155211825-155229534'
+annotation: 'workflow/data/clinvar_fixnames.vcf.gz'
 
 #clustering
 subsample: 1000
@@ -27,6 +27,6 @@ maxAmpliconSize: 20000
 maxUchime: 1
 
 #alignment
-alignHiFi: False
+alignHiFi: True
 
 # variant calling
