@@ -1,4 +1,4 @@
-localrules: tabix_vcf, extract_alignments
+localrules: extract_alignments
 
 checkpoint extract_alignments:
     input:
@@ -55,16 +55,3 @@ rule bgzip_vcf:
         "Executing {rule}: Compressing {input}."
     shell:
         "(bgzip --threads {threads} {input}) > {log} 2>&1"
-
-rule tabix_vcf:
-    input:
-        f'batches/{batch}/{{sample}}/{{prefix}}.vcf.gz'
-    output:
-        f'batches/{batch}/{{sample}}/{{prefix}}.vcf.gz.tbi'
-    threads: 1
-    conda:
-        "envs/htslib.yaml"
-    message:
-        "Executing {rule}: Indexing {input}."
-    shell:
-        "tabix -p vcf {input}"

@@ -2,9 +2,11 @@ rule annotate:
     input: 
         vcf=f'batches/{batch}/{{sample}}/vcf/{{consensus}}.{ref}.htsbox.vcf.gz',
         vcf_index=f'batches/{batch}/{{sample}}/vcf/{{consensus}}.{ref}.htsbox.vcf.gz.tbi',
-        annot=config["annotation"],
+        reference=config["reference"]["fasta"],
+        clinvar=config["annotation"]["clinvar"],
+        conseq=config["annotation"]["consequence"],
     output:
-        f'batches/{batch}/{{sample}}/vcf/{{consensus}}.{ref}.htsbox.annotated.vcf.gz'
+        f'batches/{batch}/{{sample}}/vcf/{{consensus}}.{ref}.htsbox.annotated.vcf.gz',
     threads:
         1
     log:
@@ -17,8 +19,14 @@ rule annotate:
         '''
         (bcftools annotate \
                   -c ID,INFO \
-                  -a {input.annot} \
+                  -a {input.clinvar} \
+                  {input.vcf} | \
+         bcftools csq \
+                  -f {input.reference} \
+                  -g {input.conseq} | \
+         bcftools reheader \
+                  -s <(echo {wildcards.consensus}) | \
+         bcftools view \
                   -Oz \
-                  -o {output} \
-                  {input.vcf}) > {log} 2>&1
+                  -o {output}) > {log} 2>&1
         '''

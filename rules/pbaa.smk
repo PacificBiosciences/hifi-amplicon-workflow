@@ -27,7 +27,6 @@ rule pbaa_cluster:
         cons1=f'batches/{batch}/{{sample}}/pbaa_passed_cluster_sequences.fasta',
         cons2=f'batches/{batch}/{{sample}}/pbaa_failed_cluster_sequences.fasta',
         info=f'batches/{batch}/{{sample}}/pbaa_read_info.txt',
-        log=f'batches/{batch}/{{sample}}/pbaa.log'
     params:
         prefix=f'batches/{batch}/{{sample}}/pbaa',
         loglevel='INFO',
@@ -50,7 +49,6 @@ rule pbaa_cluster:
                       --min-cluster-read-count {params.minReads} \
                       --max-amplicon-size {params.maxLen} \
                       -j {threads} \
-                      --log-file {output.log} \
                       --log-level {params.loglevel} \
                       {input.guide} {input.fq} {params.prefix}) > {log} 2>&1
         '''

@@ -58,21 +58,13 @@ def _agg_mapped_consensus( wildcards ):
     samples = { bc2sample[bc] for bc in _get_bam_demuxed( wildcards ) }
     return expand( f'batches/{batch}/{{sample}}/pbaa_passed_cluster_sequences.{ref}.bam', sample=samples )
 
-#def _agg_consensus_vcf( wildcards ):
-#    samples = { bc2sample[bc] for bc in _get_bam_demuxed( wildcards ) }
-#    targets = []
-#    for sample in samples:
-#        extract_dir = checkpoints.extract_alignments.get( sample=sample ).output[0]
-#        consensus   = glob_wildcards( f'{extract_dir}/{{consensus}}.{ref}.bam' ).consensus
-#        targets.extend( expand( f'batches/{batch}/{sample}/vcf/{{consensus}}.{ref}.htsbox.variants.tsv', consensus=consensus ) )
-#    return targets
-
 def _agg_variant_summary( wildcards ):
     samples = { bc2sample[bc] for bc in _get_bam_demuxed( wildcards ) }
-    return expand( f'batches/{batch}/{{sample}}/{{sample}}.{ref}.clinvar_annotated.variant_summary.tsv', sample=samples )
+    return expand( f'batches/{batch}/{{sample}}/{{sample}}.{ref}.clinvar_annotated.variant_summary.xlsx', sample=samples )
 
 extra_targets = []
 
+include: "rules/common.smk"
 include: "rules/demux.smk"
 include: "rules/primertrim.smk"
 include: "rules/bam2fastq.smk"
@@ -81,9 +73,12 @@ include: "rules/alignConsensus.smk"
 include: "rules/htsbox.smk"
 include: "rules/annotate.smk"
 include: "rules/report.smk"
+include: "rules/clusterMetrics.smk"
 
 if config['alignHiFi']:
     include: "rules/alignHiFi.smk"
+#if config['QC']['barcodes']:
+#    include: "rules/barcode_qc.smk"
 
 rule all:
     input:

@@ -5,7 +5,7 @@ rule report:
     output:
         f'batches/{batch}/{{sample}}/vcf/{{consensus}}.{ref}.htsbox.variants.tsv',
     params:
-        fields='\'%CHROM\t%POS\t%ID\t%REF\t%ALT\t[%CLNSIG\t%CLNDN]\n\'',
+        fields=lambda wc: '\'%CHROM\t%POS\t%ID\t%REF\t%ALT\t[%SAMPLE\t%CLNSIG\t%CLNDN\t%TBCSQ{0}]\n\'',
     threads:
         1
     log:
@@ -16,7 +16,7 @@ rule report:
         "Reporting variants for {wildcards.sample}: {wildcards.consensus}"
     shell:
         '''
-        (bcftools query -H -f {params.fields} {input.vcf} > {output}) > {log} 2>&1
+        (bcftools query -Hu -f {params.fields} {input.vcf} > {output}) > {log} 2>&1
         '''
 
 def _get_alleles( wildcards ):
@@ -28,22 +28,22 @@ rule collate_alleles:
     input:
         tsvs=_get_alleles,
     output:
-        f'batches/{batch}/{{sample}}/{{sample}}.{ref}.clinvar_annotated.variant_summary.tsv',
+        f'batches/{batch}/{{sample}}/{{sample}}.{ref}.clinvar_annotated.variant_summary.xlsx',
     run:
         import pandas as pd
-        patt = 'sample-(?P<barcode>.*)_guide-(?P<guide>.*)_cluster-(?P<cluster>[0-9]+)_ReadCount-(?P<numreads>[0-9]+).*:(?P<field>.*$)'
-        fmt = lambda r: f'{r.guide}_{r.cluster}_numreads{r.numreads}:{r.field}'
-        
+        patt = 'sample-(?P<Sample>.*)_guide-(?P<Target>.*)_cluster-(?P<Cluster>[0-9]+)_ReadCount-(?P<Numreads>[0-9]+)'
+
         def read_tsv( tsv ):
             tbl = pd.read_csv( tsv, sep='\t' )
-            tbl.columns = tbl.columns.str.replace( '^.*\]', '', regex=True )
-            tbl = tbl[tbl.ID != "."]
-            infoCols = tbl.columns.str.contains( 'cluster' )
-            tbl.columns = tbl.columns.where( ~infoCols, 
-                                              tbl.columns.str.extract( patt ).apply( fmt, axis=1 )
-                                            )
-            return tbl.set_index( list( tbl.columns[ ~infoCols ] ) )
-        pd.concat( map( read_tsv, sorted( input.tsvs ) ), axis=1 )\
-          .dropna( axis=1, how='all' )\
-          .fillna( '<not called>' )\
-          .to_csv( output[0], sep='\t' )
+            tbl.columns = tbl.columns.str.replace( '^.*\]', '', regex=True ).str.split(':').str[-1]
+            #fill in columns with missing cluster ("sample") name
+            tbl.SAMPLE = tbl.SAMPLE[ tbl.SAMPLE.notnull()].iloc[0]
+            clusterInfo = tbl.SAMPLE.str.extract( patt )
+            res = pd.concat( [ tbl, clusterInfo ], axis=1 ).drop( columns='SAMPLE' ).fillna( '.' )
+            res.set_index( [ 'Sample','Target','Cluster','Numreads','CHROM','POS'], inplace=True )
+            return res
+        
+        pd.concat( map( read_tsv, input.tsvs ), axis=0 )\
+          .sort_index()\
+          .fillna('.')\
+          .to_excel( output[0] )

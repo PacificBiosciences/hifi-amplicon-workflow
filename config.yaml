@@ -2,8 +2,8 @@
 tmpdir: '/scratch'
 
 # Demux
-barcodes: 'reference/Sequel_96_barcodes_v1.fasta'
-primers: 'reference/primers_gba_gbap1.fasta'
+barcodes: 'workflow/data/Sequel_96_barcodes_v1.fasta'
+primers: 'workflow/data/primers_gba_gbap1.fasta'
 barcodePreset: 'ASYMMETRIC'
 demuxCross: True
 minPrimerMatch: 95
@@ -15,18 +15,18 @@ reference:
 regions:
     GBA: 'chr1:155234293-155244663'
     GBAP1: 'chr1:155211825-155229534'
-annotation: 'workflow/data/clinvar_fixnames.vcf.gz'
+annotation:
+    clinvar: 'workflow/data/clinvar_fixnames.vcf.gz'
+    consequence: 'workflow/data/Homo_sapiens.GRCh38.108.chromosome.1.gff3.gz'
 
 #clustering
 subsample: 1000
 randomSeed: 42
 maxClusteringReads: 500
-minClusterFrequency: 0.1
+minClusterFrequency: 0.125
 minClusterReads: 10
 maxAmpliconSize: 20000
 maxUchime: 1
 
 #alignment
 alignHiFi: True
-
-# variant calling

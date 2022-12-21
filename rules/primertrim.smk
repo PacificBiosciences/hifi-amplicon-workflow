@@ -3,7 +3,8 @@ rule primer_trim:
         primers=config['primers'],
         reads=f'batches/{batch}/demux/demultiplex.{{barcode}}.bam',
     output:
-        f'batches/{batch}/{{sample}}/primertrim/{{barcode}}/primerClipped.bam',
+        base=f'batches/{batch}/{{sample}}/primertrim/{{barcode}}/primerClipped.bam',
+        report=f'batches/{batch}/{{sample}}/primertrim/{{barcode}}/primerClipped.lima.report',
     params:
         preset=f'--ccs --min-score {config["minPrimerMatch"]} --min-end-score {config["minPrimerMatch"]} --min-ref-span 0.75 --different --min-scoring-regions 2',
         loglevel='INFO',
@@ -18,38 +19,5 @@ rule primer_trim:
         (lima {params.preset} \
               -j {threads} \
               --log-level {params.loglevel} \
-              {input.reads} {input.primers} {output}) > {log} 2>&1
+              {input.reads} {input.primers} {output.base}) > {log} 2>&1
         '''
-
-#rule bam_to_fastq:
-#    input:
-#        [ f'batches/{batch}/{{sample}}/primertrim/{barcode}/primerClipped.bam'
-#    output:
-#        f'batches/{batch}/{{sample}}/primertrim/primerClipped.fastq',
-#    threads:
-#        2
-#    log:
-#        f'batches/{batch}/logs/samtools/bam_to_fastq.{{sample}}.log'
-#    conda:
-#        'envs/samtools.yaml'
-#    shell:
-#        '''
-#        (samtools fastq {input} > {output}) > {log} 2>&1
-#        '''
-#
-#rule fqidx:
-#    input:
-#        f'batches/{batch}/{{sample}}/primertrim/primerClipped.fastq',
-#    output:
-#        f'batches/{batch}/{{sample}}/primertrim/primerClipped.fastq.fai',
-#    threads:
-#        1
-#    log:
-#        f'batches/{batch}/logs/samtools/fqidx.{{sample}}.log'
-#    conda:
-#        'envs/samtools.yaml'
-#    shell:
-#        '''
-#        (samtools fqidx {input}) > {log} 2>&1
-#        '''
-#
