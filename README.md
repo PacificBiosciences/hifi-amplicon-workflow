@@ -85,12 +85,12 @@ Results will be generated in a new directory named batches/<batch_name>
 │       ├── <sample_id 1>/  # per-sample results, one for each sample
 │       :        ...
 │       └── <sample_id n>/  # per-sample results, one for each sample
-│           ├── 0152.GRCh38.clinvar_annotated.variant_summary.xlsx # variant summary excel sheet
+│           ├── <sample_id n>.GRCh38.clinvar_annotated.variant_summary.xlsx # variant summary excel sheet
 │           ├── clusterQC.report.tsv # Barcode and Primers -- check here for cross-amplified calls
 │           ├── hifi.GRCh38.painted.bam # aligned HiFi subset with cluster labels
 │           ├── hifi.GRCh38.painted.bam.bai
-│           ├── pbaa_0152_GBA_ecr.fasta # error-corrected reads for target GBA
-│           ├── pbaa_0152_GBAP1_ecr.fasta # error-corrected reads for target GBAP1
+│           ├── pbaa_<sample_id n>_GBA_ecr.fasta # error-corrected reads for target GBA
+│           ├── pbaa_<sample_id n>_GBAP1_ecr.fasta # error-corrected reads for target GBAP1
 │           ├── pbaa_failed_cluster_sequences.fasta # failed cluster consensus
 │           ├── pbaa_passed_cluster_sequences.fasta # passed cluster consensus
 │           ├── pbaa_passed_cluster_sequences.GRCh38.bam # cluster consensus aligned to reference
