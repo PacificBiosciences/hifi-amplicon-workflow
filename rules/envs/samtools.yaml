@@ -6,3 +6,4 @@ channels:
 dependencies:
   - samtools==1.13
   - seqtk
+  - parallel
