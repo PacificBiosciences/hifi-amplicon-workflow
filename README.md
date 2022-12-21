@@ -7,7 +7,7 @@ Generalized amplicon workflow for single-gene HiFi amplicon targets
   3. Convert demuxed HiFi bam files to fastq + index
   4. Cluster with [pbaa](https://github.com/PacificBiosciences/pbAA)
   5. Align cluster consensus & labeled HiFi reads
-  6. Call variants per cluster with htslib
+  6. Call variants per cluster with htslib/[htsbox](https://github.com/lh3/htsbox)
   7. Annotate variants with [clinVar](https://www.ncbi.nlm.nih.gov/clinvar/) 
   8. Annotate variants with [bcftools consequence](https://academic.oup.com/bioinformatics/article/33/13/2037/3000373)
   9. Generate variant reports 
@@ -34,7 +34,7 @@ git clone https://github.com/PacificBiosciences/hifi-amplicon-workflow-poc.git w
 mkdir reference cluster_logs
 
 # REFERENCE
-# drop your reference.fasta, reference.fasta.fai, barcode.fasta and primer.fasta into the reference directory
+# drop your reference.fasta and reference.fasta.fai into the reference directory
 # For simplicity, only include chromosomes of your targets ( samtools faidx GRCH38.fasta chr1 > GRCh38_chr1.fasta )
 # adjust the paths to those files in workflow/config.yaml
 
@@ -65,7 +65,7 @@ mkdir reference cluster_logs
 # run the workflow for batch <batch_name>
 sbatch workflow/run_snakemake.sh <batch_name> <biosample_csv> <hifi_reads>
  
-Results will be generated in a new directory named batches/<batch_id>
+Results will be generated in a new directory named batches/<batch_name>
 ```
 
 # Directory structure within basedir
@@ -100,9 +100,11 @@ Results will be generated in a new directory named batches/<batch_id>
 │           ├── primertrim_subsample/  # subsampled fastq, input to pbaa
 │           └── vcf/ # vcf/tsv reports for each cluster identified in pbaa clustering
 └── workflow  # clone of this repo
-    ├── <workflow_files>
-    │       :        ...
-    ├── <workflow_files>
+    ├── Snakefile # workflow definition
+    ├── cluster.yaml # cluster settings
+    ├── config.yaml # pipeline configuration -- edit this for reference and other local paths
+    ├── run_snakemake.sh # convenience script to start snakemake runs
+    ├── rules/  # workflow definitions
     └── data
         ├── clinvar_fixnames.vcf.gz
         ├── clinvar_fixnames.vcf.gz.tbi

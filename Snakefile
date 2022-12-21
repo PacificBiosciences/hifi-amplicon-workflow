@@ -16,7 +16,7 @@ bc2sample = dict(
                   for i,line in enumerate( open( config[ 'biosamples' ] ).readlines() )
                   if i > 0
                 ) 
-# Reverse mapping uses a list so more than on barcode can encode a single sample
+# Reverse mapping uses a list so more than one barcode can encode a single sample
 sample2bc = defaultdict(list)
 for k,v in bc2sample.items():
     sample2bc[v].append(k)
@@ -77,8 +77,6 @@ include: "rules/clusterMetrics.smk"
 
 if config['alignHiFi']:
     include: "rules/alignHiFi.smk"
-#if config['QC']['barcodes']:
-#    include: "rules/barcode_qc.smk"
 
 rule all:
     input:
