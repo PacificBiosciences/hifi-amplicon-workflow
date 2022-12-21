@@ -28,7 +28,7 @@ conda create \
 conda activate ./conda_env
 
 # clone the github repo into 'workflow' subdirectory
-git clone https://github.com/PacificBiosciences/hifi-amplicon-workflow-poc.git workflow
+git clone https://github.com/PacificBiosciences/hifi-amplicon-workflow.git workflow
 
 # create a couple directories for reference sequence and analysis logs
 mkdir reference cluster_logs
