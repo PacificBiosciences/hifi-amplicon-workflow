@@ -2,7 +2,7 @@
 tmpdir: '/scratch'
 
 # Demux
-barcodes: 'workflow/data/Sequel_96_barcodes_v1.fasta'
+barcodes: 'workflow/data/PrimerBarcodesOnlyMInusBuffer_P0024_GBA96.fasta'
 primers: 'workflow/data/primers_gba_gbap1.fasta'
 barcodePreset: 'ASYMMETRIC'
 demuxCross: True

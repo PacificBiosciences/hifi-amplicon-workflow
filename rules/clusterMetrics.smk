@@ -52,7 +52,7 @@ rule get_cluster_qc:
     run:
         import pandas as pd
         cluster_info = pd.read_csv( input.pbaa_info, sep='\s', engine='python', usecols=[0,1,9], names=['read','target','cluster'], index_col=0 )
-        cluster_info.index = cluster_info.index.str.rsplit('/',1).str[0]
+        cluster_info.index = cluster_info.index.str.rsplit('/',n=1).str[0]
         end_calls = pd.merge(
                             *[ pd.read_csv( tbl, sep='\t', usecols=[0,7,35,36], names=['read','qual','fwd','rev'], index_col=0 )
                             for tbl in [ input.demux_report, input.ptrim_report ] ],

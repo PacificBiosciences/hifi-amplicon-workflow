@@ -36,6 +36,8 @@ rule collate_alleles:
         def read_tsv( tsv ):
             tbl = pd.read_csv( tsv, sep='\t' )
             tbl.columns = tbl.columns.str.replace( '^.*\]', '', regex=True ).str.split(':').str[-1]
+            if tbl.empty:
+                tbl.loc[0] = {'SAMPLE' : tsv, 'CHROM': 'NoVariants'}
             #fill in columns with missing cluster ("sample") name
             tbl.SAMPLE = tbl.SAMPLE[ tbl.SAMPLE.notnull()].iloc[0]
             clusterInfo = tbl.SAMPLE.str.extract( patt )

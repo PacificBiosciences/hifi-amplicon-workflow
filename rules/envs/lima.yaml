@@ -3,4 +3,5 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - lima=2.6.0
+  - lima=2.7.1
+  # - lima=2.6.0
